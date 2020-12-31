@@ -9,8 +9,37 @@ let comando = args => {
     msg += r + "\n";
   }
   return msg;
-}
+};
 
+let actualizarEstructura = () => {
+  let aux = comando(`find news -type f`);
+  console.log("Haciendo split");
+  let files = aux.split("\n");
+console.log(`Files: ${files}!!!`);
+  let auxObj = {};
+
+  console.log("Recorriendo los " + files.length + " archivos encontrados");
+  for (let i in files) {
+    if(files[i] !== "") {
+      console.log(i);
+      auxObj[`file${i+1}`] = {
+        url: `https://github.com/StringManolo/sm/raw/main/${files[i]}`,
+        date: JSON.parse(comando(`cat ${files[i]}`)).fecha	    
+      };
+    }
+  }
+
+  console.log("Abriendo...");
+  let fd = std.open("./availableFiles.ff", "w");
+  console.log("Escribiendo");
+  fd.puts(JSON.stringify(auxObj));
+  console.log("Cerrando");
+  fd.close();
+};
+
+/*actualizarEstructura();
+
+throw "debug.";*/
 
 console.log("Pega tu JSON y presiona enter.");
 
@@ -23,9 +52,11 @@ let fecha = {};
 
 let titular = base64("e", noticia.titular).replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/g, ",");
 
-if (titular.length > 99) {
-  titular.length = 99; /* Max filesystem name chars */
+if (titular.length > 90) {
+  titular.length = 90; /* Max filesystem name chars */
 }
+
+titular = titular + ".json";
 
 console.log(`Fecha de la noticia:
 Año - ${fecha.año}
@@ -44,6 +75,7 @@ if (res === "") {
   comando(`mkdir -p news/${fecha.año}/${fecha.mes}/${fecha.dia}/`);
   let fd = std.open(`news/${fecha.año}/${fecha.mes}/${fecha.dia}/${titular}`, "w");
   fd.puts(noticiaRaw);
+  fd.close();
   cambiosRepo = true;
 } else {
   /* Leer archivo y comparar ultimaModif */
@@ -58,6 +90,7 @@ if (res === "") {
     if (/s/gi.test(res)) {
       let fd = std.open(`news/${fecha.año}/${fecha.mes}/${fecha.dia}/${titular}`, "w");
       fd.puts(noticiaRaw);
+      fd.close();
       cambiosRepo = true;
     }
   } else {
@@ -66,12 +99,16 @@ if (res === "") {
     if (/s/gi.test(res)) {
       let fd = std.open(`news/${fecha.año}/${fecha.mes}/${fecha.dia}/${titular}`, "w");
       fd.puts(noticiaRaw);
+      fd.close();
       cambiosRepo = true;
     }
   }
 }
 
 if (cambiosRepo) {
+  console.log("Actualizando estructura");
+  actualizarEstructura();
+  console.log("Listo");
   console.log("Actualizar repo? S/N");
   if (/s/gi.test(std.in.getline())) {
     comando(`git add --all && git commit -m "automated pushed by clasificador.js" && git push`);
