@@ -5,7 +5,7 @@ ff.defineShortcut("_", alert);
 
 _(1);
 
-let getLastArticles = (number=10) => {
+let getLastArticles = (callback, callbackAll, number=10) => {
   ff._GET("./availableFiles.json", function(res) {
     let files = JSON.parse(res);
     let fileNames = Object.keys(files);
@@ -17,23 +17,80 @@ let getLastArticles = (number=10) => {
     }
 
     urls = urls.sort();
-    urls.length = number;
+    if (urls.length > number) {
+      urls.length = number;
+    }
 
     let promis = [];
 
     for (let i in urls) {
       urls[i] = urls[i].substr(+urls[i].indexOf("#") + 1, urls[i].length);
-      _(`Requesting ${urls[i]}`);
+      //_(`Requesting ${urls[i]}`);
       ff._GET(urls[i], function(res) {
-        promis.push(JSON.parse(res));
-        _(promis);
+        promis.push(res);
+	if (promis.length === urls.length) {
+          callbackAll(promis);
+        } else {
+          //_(`Not end ${res}`);
+	  //_(`Promis = ${promis.length} && Urls = ${urls.length}`);
+          callback(res);
+	}
       });
     }
-
   });
 };
 
-getLastArticles(2);
+
+function addArticle(article) {
+  article = JSON.parse(article);
+  let sect = $("#lastArticles");
+  
+  let art = document.createElement("article");
+
+  let titular = document.createElement("h2");
+  titular.innerText = article.titular;
+  art.appendChild(titular);
+
+  let autor = document.createElement("span");
+  autor.innerText = article.autor;
+  art.appendChild(autor);
+
+  let fecha = document.createElement("time");
+  fecha.innerText = article.fecha;
+  art.appendChild(fecha);
+
+  let resumen = document.createElement("p");
+  resumen.innerText = article.resumen;
+  art.appendChild(resumen);
+
+  let introduccion = document.createElement("p");
+  introduccion.innerText = article.introduccion;
+  art.appendChild(introduccion);
+
+  let contenido = document.createElement("p");
+  contenido.innerText = article.contenido;
+  art.appendChild(contenido);
+
+  let categorias = document.createElement("span");
+  categorias.innerText = article.categorias;
+  art.appendChild(categorias);
+
+  let fuentes = document.createElement("cite");
+  fuentes.innerText = article.fuentes;
+  art.appendChild(fuentes);
+
+  sect.appendChild(art);
+  
+}
 
 
+function main() {
+  getLastArticles( function(article) {
+    //_(article);
+    addArticle(article);
+  }, function(articles) {
+    //_(`Articles: ${articles}`);
+  });
+}
 
+main();
