@@ -23,7 +23,10 @@ console.log(`Files: ${files}!!!`);
     if(files[i] !== "") {
       console.log(i);
       auxObj[`file${+i+1}`] = {
-        url: `https://github.com/StringManolo/sm/raw/main/${files[i]}`,
+        url: `https://raw.githubusercontent.com/StringManolo/sm/main/${files[i]}`,
+
+
+
         date: JSON.parse(comando(`cat ${files[i]}`)).fecha	    
       };
     }

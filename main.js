@@ -19,17 +19,16 @@ let getLastArticles = (number=10) => {
     urls = urls.sort();
     urls.length = number;
 
+    let promis = [];
+
     for (let i in urls) {
       urls[i] = urls[i].substr(+urls[i].indexOf("#") + 1, urls[i].length);
+      _(`Requesting ${urls[i]}`);
+      ff._GET(urls[i], function(res) {
+        promis.push(JSON.parse(res));
+        _(promis);
+      });
     }
-
-    _(urls);
-
-    Promise.all(urls.map(url => fetch(url)))
-    .then(resp => Promise.all( resp.map(r => r.text()) ))
-    .then(result => {
-      _(result);
-    });
 
   });
 };
