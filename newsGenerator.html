@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<title>Generador Noticias</title>
+</head>
+<body>
+<main id="menu">
+  <section id="visualDivisions">
+    <article id="visualHead">
+      <label>Titular
+        <input type="text" id="titular" placeholder="Titular">
+      </label>
+
+      <label>Autor
+        <input type="text" id="autor" placeholder="Autor">
+      </label>
+
+      <label>Fecha
+        <input type="date" id="fecha">
+      </label>
+    </article>
+
+    <article id="visualHead2">
+      <label>Resumen
+        <textarea id="resumen" placeholder="Resumen"></textarea>
+      </label>
+
+      <label>Introduccion
+        <textarea id="introduccion" placeholder="Introduccion"></textarea>
+      </label>
+
+      <label>Estado
+        <input type="text" id="estado" placeholder="SelectOption">
+      </label>
+    </article>
+
+    <article id="visualMain">
+      <label>Contenido
+        <textarea id="contenido" placeholder="Contenido"></textarea>
+      </label>
+
+      <label>Categorias
+        <input type="text" id="categorias" placeholder="checkboxes">
+      </label>
+    </article>
+
+    <article id="visualFooter">
+      <label>Fuentes
+        <input type="text" id="fuentes" placeholder="Fuentes">
+      </label>
+    </article>
+    
+    <button type="button" id="generar">Generar</button>
+
+    <label>Json
+      <textarea id="json"></textarea>
+    </label>
+
+    <button type="button" id="rellenar">Rellenar</button>
+  </section>
+</main>
+
+<style>
+body {
+  margin: 0 0 0 0;
+}
+
+#menu {
+  text-align: center;
+}
+
+#visualHead, #visualHead2, #visualMain, #visualFooter {
+  display: block;
+  margin-top: 1em;
+}
+</style>
+
+<script type="module">
+import ff from "./ff.js";
+
+ff.activateShortcuts();
+ff.defineShortcut("_", alert);
+
+ael($("#generar"), "click", () => {
+  $("#json").value = JSON.stringify( {
+    titular: $("#titular").value,
+    autor: $("#autor").value,
+    fecha: $("#fecha").value,
+    resumen: $("#resumen").value,
+    introduccion: $("#introduccion").value,
+    estado: $("#estado").value,
+    contenido: $("#contenido").value,
+    categorias: $("#categorias").value,
+    fuentes: $("#fuentes").value
+  });
+});
+
+ael($("#rellenar"), "click", () => {
+  let aux = JSON.parse($("#json").value);
+  $("#titular").value = aux.titular;
+  $("#autor").value = aux.autor;
+  $("#fecha").value = aux.fecha;
+  $("#resumen").value = aux.resumen;
+  $("#introduccion").value = aux.introduccion;
+  $("#estado").value = aux.estado;
+  $("#contenido").value = aux.contenido;
+  $("#categorias").value = aux.categorias;
+  $("#fuentes").value = aux.fuentes;
+});
+</script>
+</body>
+</html>
