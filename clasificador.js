@@ -51,7 +51,8 @@ if (res === "") {
   console.log(err.errno);
 } else {
   /* Leer archivo y comparar ultimaModif */
-  let ultModAlm = (JSON.stringify(res).ultimaModificacion || 0);
+  console.log(res);
+  let ultModAlm = (JSON.parse(res).ultimaModificacion || 0);
 
   if (ultModAlm === noticia.ultimaModificacion) {
     console.log("El artículo ya existe y no presenta cambios");
