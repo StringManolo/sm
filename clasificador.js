@@ -30,7 +30,7 @@ console.log(`Files: ${files}!!!`);
   }
 
   console.log("Abriendo...");
-  let fd = std.open("./availableFiles.ff", "w");
+  let fd = std.open("./availableFiles.json", "w");
   console.log("Escribiendo");
   fd.puts(JSON.stringify(auxObj));
   console.log("Cerrando");
