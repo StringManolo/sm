@@ -44,10 +44,10 @@ let getLastArticles = (callback, callbackAll, number=10) => {
 function addArticle(article) {
   article = JSON.parse(article);
   let sect = $("#lastArticles");
-  
   let art = document.createElement("article");
 
   let titular = document.createElement("h2");
+  titular.className = "titular";
   titular.innerText = article.titular;
   art.appendChild(titular);
 
@@ -56,6 +56,7 @@ function addArticle(article) {
   art.appendChild(autor);
 
   let fecha = document.createElement("time");
+  fecha.className = "fecha";
   fecha.innerText = article.fecha;
   art.appendChild(fecha);
 

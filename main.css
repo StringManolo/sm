@@ -1,0 +1,15 @@
+#lastArticles > article {
+  border: 1px solid red;
+}
+
+#lastArticles > article > .titular {
+  color: blue;
+  text-align: center;
+}
+
+#lastArticles > article > .fecha {
+  display: block;
+  text-align: right;
+  margin-right: 1em;
+}
+
