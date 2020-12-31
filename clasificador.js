@@ -56,7 +56,7 @@ let fecha = {};
 let titular = base64("e", noticia.titular).replace(/\+/g, "-").replace(/\//g, "_").replace(/\=/g, ",");
 
 if (titular.length > 90) {
-  titular.length = 90; /* Max filesystem name chars */
+  titular = titular.substr(0, 90); /* Max filesystem name chars */
 }
 
 titular = titular + ".json";

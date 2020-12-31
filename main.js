@@ -73,6 +73,7 @@ function addArticle(article) {
   art.appendChild(contenido);
 
   let categorias = document.createElement("span");
+  categorias.style.display = "block";
   categorias.innerText = article.categorias;
   art.appendChild(categorias);
 
