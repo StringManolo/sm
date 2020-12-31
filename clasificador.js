@@ -74,6 +74,7 @@ if (res === "") {
 
 console.log("Actualizar repo? S/N");
 if (/s/gi.test(std.in.getline())) {
-  comando(`git add --all && git commit -m "automated pushed by clasificador.js" && push`);
+  comando(`git add --all && git commit -m "automated pushed by clasificador.js" && git push`);
+
 }
 //console.log(`Noticia: ${noticia.autor}`);
